@@ -1,1 +1,1 @@
-# ARS_assignments
+# NeuroEvolution Robot Simulator
