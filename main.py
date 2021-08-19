@@ -30,7 +30,7 @@ class simulator_state:
             select_s.draw()
         ### Code or bot environment ###
         elif self.state == "train_envir":
-            test_environment = TestEnvironment(20, 100, 500)
+            test_environment = TestEnvironment(20, 200, 500)
             test_environment.run_experiment()
         ### Code for obstacle creator ###
         elif self.state == "obstacle_creator":

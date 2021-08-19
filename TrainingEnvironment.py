@@ -209,6 +209,7 @@ class PlayerSprite(pygame.sprite.Sprite):
         self.bot.pos[1] += mov_vect[1] +modify_y
 
         self.rect.center = self.bot.pos
+        return len(collisions)
 
     def point_line_distance(self, pos, line_point1, line_point2):
         A = pos[0] - line_point1[0]
@@ -347,7 +348,7 @@ class TestEnvironment:
         self.clock = pygame.time.Clock()
 
         # Test Subject / Bot & Test Maze
-        self.obstacle_list = self.reconstruct_obstacles("maze_files/maze1.pickle")
+        self.obstacle_list = self.reconstruct_obstacles("maze_files/maze3.pickle")
         self.obstacle_list2 = self.reconstruct_obstacles("maze_files/maze2.pickle")
         self.test_mazes = [self.obstacle_list, self.obstacle_list2]
 
@@ -444,6 +445,7 @@ class TestEnvironment:
 
         i = 0
         total_dust = 0
+        num_collisions = 0
         for obstacle_list in self.test_mazes:
 
             # Give obstacles to bot
@@ -474,7 +476,7 @@ class TestEnvironment:
 
                     # Move bot
                     self.pSprite.bot.calc_pos(self.delta_v)
-                    self.pSprite.update()
+                    num_collisions+=self.pSprite.update()
 
                     # Check dust collected
                     check_dust_robot_colision(self.dust_list, self.pSprite)
@@ -489,7 +491,7 @@ class TestEnvironment:
             print("experiement_end_dust "+ str(len(self.dust_list)))
             self.visualize_test(genome)
 
-        fitness_value = total_dust / len(starting_positions)
+        fitness_value = (total_dust - num_collisions * 10) / len(starting_positions)
         print("fitness "+str(fitness_value))
         print("###############")
         if fitness_value > self.best_fitness:
